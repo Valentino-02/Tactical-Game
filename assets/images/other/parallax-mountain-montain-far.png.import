@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/horse_archer.jpg-63489b01c1ad1dcb11f33ae472b50636.stex"
+path="res://.import/parallax-mountain-montain-far.png-b1f7171705c5039d36dfe3ef5e8f2f38.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/cards/horse_archer.jpg"
-dest_files=[ "res://.import/horse_archer.jpg-63489b01c1ad1dcb11f33ae472b50636.stex" ]
+source_file="res://assets/images/other/parallax-mountain-montain-far.png"
+dest_files=[ "res://.import/parallax-mountain-montain-far.png-b1f7171705c5039d36dfe3ef5e8f2f38.stex" ]
 
 [params]
 

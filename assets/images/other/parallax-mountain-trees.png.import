@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/CardBackground.png-e36e94b4b323d0596139731b645f9877.stex"
+path="res://.import/parallax-mountain-trees.png-6d71fac7a6fcdf9f285e7f7fd490b650.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/cards/CardBackground.png"
-dest_files=[ "res://.import/CardBackground.png-e36e94b4b323d0596139731b645f9877.stex" ]
+source_file="res://assets/images/other/parallax-mountain-trees.png"
+dest_files=[ "res://.import/parallax-mountain-trees.png-6d71fac7a6fcdf9f285e7f7fd490b650.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=false
+flags/filter=true
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2

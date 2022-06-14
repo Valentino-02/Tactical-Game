@@ -118,11 +118,11 @@ func get_walkable_tiles(start_pos: Vector2, max_steps: int) -> Array:
 	return out
 
 
-# converts Vector2 to a string readable by the grid
+## converts Vector2 to a string readable by the grid
 func _str(pos: Vector2) -> String:
 	return (str(pos.x) + "," + str(pos.y))
 
-# checks if pos is in grid before apending it to an array. Mainly to not start writing so many ifs
+## checks if pos is in grid before apending it to an array. Mainly to not start writing so many ifs
 func _append(array: Array, pos: Vector2) -> void:
 	if is_in_grid(pos):
 		array.append(pos)
