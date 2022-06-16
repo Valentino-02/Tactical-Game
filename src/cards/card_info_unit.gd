@@ -1,5 +1,5 @@
 extends Resource
-class_name UnitCardInfo
+class_name CardInfoUnit
 
 
 var _info_array: Array

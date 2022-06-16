@@ -56,14 +56,14 @@ func move_unit(from: Vector2, to: Vector2) -> void:
 	grid[_str(to)].unit = unit
 	grid[_str(to)].ocupied = true
 
-func is_zone_control(pos: Vector2, player: Player) -> bool:
+func is_zone_control(pos: Vector2, player_id) -> bool:
 	var is_zone = false
 	var neighbors = [Vector2.RIGHT, Vector2.LEFT, Vector2.UP, Vector2.DOWN]
 	for n in neighbors:
 		if !is_in_grid(pos + n): continue
 		if !has_unit(pos + n): continue
 		var unit = get_unit(pos +n)
-		if unit._player != player:
+		if unit._player_id != player_id:
 			is_zone = true
 			break
 	return is_zone
@@ -91,9 +91,20 @@ func get_tiles_in_ranges(start_pos: Vector2, min_range: int, max_range: int) -> 
 		out.append_array(get_tiles_in_range(start_pos, R))
 	return out
 
+func get_attackable_tiles(start_pos: Vector2, min_range: int, max_range: int) -> Array:
+	var out = []
+	var player_id = get_unit(start_pos)._player_id
+	var tiles_to_test = get_tiles_in_ranges(start_pos, min_range, max_range)
+	for tile in tiles_to_test:
+		if has_unit(tile): 
+			var unit = get_unit(tile)
+			if unit._player_id == player_id: continue
+		out.append(tile)
+	return out
+
 func get_walkable_tiles(start_pos: Vector2, max_steps: int) -> Array:
 	var out = []
-	var owner = get_unit(start_pos)._player
+	var owner_id = get_unit(start_pos)._player_id
 	var neighbors = [Vector2.RIGHT, Vector2.LEFT, Vector2.UP, Vector2.DOWN]
 	var steps = 0
 	var checked = [start_pos]
@@ -108,9 +119,9 @@ func get_walkable_tiles(start_pos: Vector2, max_steps: int) -> Array:
 				if !is_in_grid(next_tile): continue
 				if has_unit(next_tile):
 					var unit = get_unit(next_tile)
-					if unit._player != owner: continue
+					if unit._player_id != owner_id: continue
 				checked.append(next_tile)
-				if !is_zone_control(next_tile, owner): next_queue.append(next_tile)
+				if !is_zone_control(next_tile, owner_id): next_queue.append(next_tile)
 				if !is_ocupied(next_tile): out.append(next_tile)
 		steps += 1
 		queue = next_queue.duplicate()

@@ -1,8 +1,8 @@
 extends Node2D
 
 
+var has_acted setget set_has_acted
 var info
-
 
 func _ready():
 	pass
@@ -25,3 +25,10 @@ func update_texture(texture: Texture):
 	updated_frames.remove_animation("default")
 
 	$AnimatedSprite.frames = updated_frames
+
+func set_has_acted(value):
+	has_acted = value
+	if has_acted:
+		modulate = Color(0.5, 0.5, 0.5)
+	if !has_acted:
+		modulate = Color(1, 1, 1)

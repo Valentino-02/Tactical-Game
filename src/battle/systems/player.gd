@@ -23,7 +23,8 @@ func _init(deck, player_id):
 	_deck = deck
 	_player_id = player_id
 	name = str("player_",player_id)
-	_asign_player_id(player_id)
+	for card in _deck:
+		card.player_id = player_id
 	_deck.shuffle()
 	health = _max_health
 
@@ -75,10 +76,6 @@ func can_play(card) -> bool:
 
 func gain_gold() -> void:
 	self.gold += 5
-
-func _asign_player_id(player_id):
-	for card in _deck:
-		card.player = str("player_",player_id)
 
 func set_health(value) -> void:
 	health = value

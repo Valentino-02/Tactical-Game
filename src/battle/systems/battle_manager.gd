@@ -2,46 +2,46 @@ extends Resource
 class_name BattleManager
 
 const GRID = preload("res://src/battle/systems/grid.tres")
-const _map_size = Vector2(10, 10)
+const MAP_SIZE = Vector2(10, 10)
 
+signal unit_added(unit)
+signal unit_moved(from, to)
 
 var _player_1
 var _player_2
-var player_on_turn
+var _player_on_turn
 
 
 func _init(deck_1, deck_2):
-	GRID.create_empty_grid(_map_size.x, _map_size.y)
+	GRID.create_empty_grid(MAP_SIZE.x, MAP_SIZE.y)
 	_player_1 = Player.new(deck_1, 1)
 	_player_2 = Player.new(deck_2, 2)
 
 func change_turn():
-	if player_on_turn == 1:
-		player_on_turn = 2
+	if _player_on_turn == _player_1:
+		_player_on_turn = _player_2
 		_player_1.end_turn()
 		_player_2.start_turn()
-	else:
-		player_on_turn = 1
+	elif _player_on_turn == _player_2:
+		_player_on_turn = _player_1
 		_player_2.end_turn()
 		_player_1.start_turn()
 
-func get_player_on_turn():
-	if player_on_turn == 1:
-		return _player_1
-	else:
-		return _player_2
-
-func play_card(player, card, pos: Vector2)-> void:
-	player.play_card(card)
+func play_card(card, pos: Vector2)-> void:
+	var player_id = card.player_id
+	if player_id == 1: _player_1.play_card(card)
+	if player_id == 2: _player_2.play_card(card)
 	
 	if card.info._type == "unit":
-		var unit = Unit.new(card.info._info_array, pos, player)
+		var unit = Unit.new(card.info._info_array, pos, player_id)
 		GRID.add_unit(unit, pos)
+		emit_signal("unit_added", unit)
 
 func move_unit(from: Vector2, to: Vector2) -> void:
 	var unit = GRID.get_unit(from)
 	GRID.move_unit(from, to)
 	unit.pos = to
+	emit_signal("unit_moved", from, to)
 
 func attack(attacker_pos, defender_pos) -> void:
 	var attacker = GRID.get_unit(attacker_pos)

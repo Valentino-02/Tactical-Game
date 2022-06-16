@@ -8,7 +8,7 @@ extends Resource
 
 const UNITS := {
 	"infantry": 
-		["unit", "infantry", 2, 12, 0, 0, 4, 1, 1, 0, 2, null],
+		["unit", "infantry", 2, 12, 0, 0, 4, 1, 1, 1, 2, null],
 	"archer": 
 		["unit", "archer", 2, 10, 1, 1, 3, 0, 2, 4, 4, null],
 }

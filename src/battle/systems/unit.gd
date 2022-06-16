@@ -6,7 +6,7 @@ var health: int
 var pos : Vector2
 var has_acted : bool
 
-var _player = null
+var _player_id = null
 var _name: String
 var _is_archer : bool
 var _is_cavalry : bool
@@ -20,7 +20,7 @@ var _max_health: int
 var _ability = null
 
 
-func _init(card_info, initial_pos, player):
+func _init(card_info, initial_pos, player_id):
 	if card_info[0] != "unit":
 		print("card info type is not unit")
 		return 
@@ -35,7 +35,7 @@ func _init(card_info, initial_pos, player):
 	_max_range = card_info[9]
 	_movement = card_info[10]
 	_ability = card_info[11]
-	_player = player
+	_player_id = player_id
 	
 	health = _max_health
 	pos = initial_pos

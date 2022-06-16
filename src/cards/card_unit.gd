@@ -1,12 +1,13 @@
 extends Node2D
 
+
 signal card_entered(card)
 signal card_exited(card)
 signal card_clicked(card)
 
 var info
 var id
-var player
+var player_id
 
 func _ready():
 	$ArtContainer/Art.texture = load(info._img_path)

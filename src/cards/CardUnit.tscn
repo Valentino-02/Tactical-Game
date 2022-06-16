@@ -1,26 +1,26 @@
 [gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://src/cards/unit_card_container.gd" type="Script" id=1]
-[ext_resource path="res://assets/images/cards/units/unit_card_background.png" type="Texture" id=2]
-[ext_resource path="res://assets/fonts/8bitlim.ttf" type="DynamicFontData" id=3]
-[ext_resource path="res://assets/fonts/manaspc.ttf" type="DynamicFontData" id=4]
-[ext_resource path="res://assets/fonts/PixelFont.tres" type="DynamicFont" id=5]
+[ext_resource path="res://assets/fonts/manaspc.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://assets/fonts/8bitlim.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://assets/fonts/PixelFont.tres" type="DynamicFont" id=3]
+[ext_resource path="res://src/cards/card_unit.gd" type="Script" id=4]
+[ext_resource path="res://assets/images/cards/units/unit_card_background.png" type="Texture" id=5]
 
 [sub_resource type="DynamicFont" id=1]
-font_data = ExtResource( 4 )
+font_data = ExtResource( 1 )
 
 [sub_resource type="DynamicFont" id=2]
-font_data = ExtResource( 3 )
+font_data = ExtResource( 2 )
 
 [sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 99, 140.5 )
 
-[node name="UnitCardContainer" type="Node2D"]
-script = ExtResource( 1 )
+[node name="CardUnit" type="Node2D"]
+script = ExtResource( 4 )
 
 [node name="Background" type="Sprite" parent="."]
 scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 2 )
+texture = ExtResource( 5 )
 centered = false
 
 [node name="ArtContainer" type="Control" parent="."]
@@ -42,7 +42,7 @@ margin_left = 9.0
 margin_top = 29.0
 margin_right = 39.0
 margin_bottom = 60.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 3 )
 text = "1"
 align = 1
 __meta__ = {
@@ -56,7 +56,7 @@ margin_top = 80.0
 margin_right = 39.0
 margin_bottom = 111.0
 rect_pivot_offset = Vector2( -66, 0 )
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 3 )
 text = "1"
 align = 1
 __meta__ = {
@@ -84,7 +84,7 @@ margin_top = 190.0
 margin_right = 39.0
 margin_bottom = 221.0
 rect_pivot_offset = Vector2( -66, 0 )
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 3 )
 text = "1"
 align = 1
 __meta__ = {
@@ -98,7 +98,7 @@ margin_top = 244.0
 margin_right = 43.0
 margin_bottom = 275.0
 rect_pivot_offset = Vector2( -66, 0 )
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 3 )
 text = "12"
 align = 1
 __meta__ = {
@@ -123,7 +123,7 @@ margin_left = 55.0
 margin_top = 11.0
 margin_right = 85.0
 margin_bottom = 42.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 3 )
 text = "1"
 align = 1
 __meta__ = {
