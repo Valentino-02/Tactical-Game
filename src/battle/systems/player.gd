@@ -3,7 +3,7 @@ class_name Player
 
 
 signal card_drawn(card)
-signal card_discarded(card)
+signal card_used(card)
 signal health_changed(value)
 signal gold_changed(value)
 
@@ -16,6 +16,7 @@ var _max_hand_size := 3
 var _deck := []
 var _discard_deck := []
 var _hand := []
+var _void_deck := []
 var _player_id 
 
 
@@ -48,15 +49,15 @@ func draw_cards(num: int) -> void:
 		_hand.append(card)
 		emit_signal("card_drawn", card)
 
-func discard(card) -> void:
+func void_card(card) -> void:
 	assert(_hand.has(card), "%s not in hand" %card)
 	_hand.erase(card)
-	_discard_deck.append(card)
-	emit_signal("card_discarded", card)
+	_void_deck.append(card)
+	emit_signal("card_used", card)
 
 func discard_hand() -> void:
 	for card in _hand:
-		emit_signal("card_discarded", card)
+		emit_signal("card_used", card)
 	_discard_deck.append_array(_hand.duplicate())
 	_hand.clear()
 
@@ -65,10 +66,16 @@ func reshuffle_into_deck() -> void:
 	_deck.shuffle()
 	_discard_deck.clear()
 
+func return_card(card_name) -> void:
+	for card in _void_deck:
+		if card.name == card_name:
+			_void_deck.erase(card)
+			_discard_deck.append(card)
+
 func play_card(card) -> void:
 	assert(_hand.has(card), "%s not in hand" %card)
 	assert(card.info._cost <= gold, "not enough gold to play %s" %card)
-	discard(card)
+	void_card(card)
 	self.gold -= card.info._cost
 
 func can_play(card) -> bool:

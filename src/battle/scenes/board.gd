@@ -32,7 +32,7 @@ func draw_attack(tiles: Array):
 			attack.set_cellv(tile, 0)
 
 func set_tile_hovered(value):
-	if tile_hovered != value:
+	if tile_hovered != value and tile_hovered != null:
 		if !owner.is_mouse_on_map and value in map.get_used_cells():
 			owner.is_mouse_on_map = true
 		if owner.is_mouse_on_map and not value in map.get_used_cells():
@@ -45,8 +45,9 @@ func set_tile_hovered(value):
 
 func _on_unit_added(unit):
 	var avatar_unit = _avatar_unit.instance()
-	avatar_holder.add_child(avatar_unit)
 	avatar_unit.name = str(unit.pos)
+	avatar_unit.player_id = unit._player_id
+	avatar_holder.add_child(avatar_unit)
 	var offset = map.get_cell_size()/2
 	avatar_unit.position = map.map_to_world(unit.pos) + offset
 
@@ -55,3 +56,12 @@ func _on_unit_moved(from, to):
 	avatar.position += map.map_to_world(to - from)
 	avatar.name = str(to)
 
+func _on_unit_died(unit):
+	var dead_avatar = avatar_holder.get_node(str(unit.pos))
+	avatar_holder.remove_child(dead_avatar)
+	dead_avatar.queue_free()
+
+func _on_unit_has_acted(has, unit):
+	print("oi")
+	var avatar = avatar_holder.get_node(str(unit.pos))
+	avatar.has_acted = has

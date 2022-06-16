@@ -32,15 +32,44 @@ func _unhandled_input(event):
 	if _is(S.card_selected):
 		_selected_card.global_position = mouse_pos + _selected_card_offset
 	
+	if is_mouse_on_map and battle_manager.GRID.has_unit(mouse_tile_pos):
+		var unit
+		if unit != battle_manager.GRID.get_unit(mouse_tile_pos):
+			unit = battle_manager.GRID.get_unit(mouse_tile_pos)
+			$Display/Damage.text = str("Damage: ",unit._damage)
+			$Display/Defence.text = str("Defence: ",unit._defence)
+			$Display/Health.text = str("Health: ",unit.health)
+			$Display/Movement.text = str("Movement: ",unit._movement)
+			$Display/Range.text = str("Range: ",unit._min_range,"/",unit._max_range)
+			$Display/UnitName.text = str("Name: ",unit._name)
+	if is_mouse_on_map and !battle_manager.GRID.has_unit(mouse_tile_pos):
+			$Display/Damage.text = str("Damage: ")
+			$Display/Defence.text = str("Defence: ")
+			$Display/Health.text = str("Helath: ")
+			$Display/Movement.text = str("Movement: ")
+			$Display/Range.text = str("Range: ")
+			$Display/UnitName.text = str("Name: ")
+	
 	if event is InputEventMouseButton:
 		if event.button_index == BUTTON_LEFT:
 			
 			if event.pressed:
+				if _is(S.selecting_target):
+					if mouse_tile_pos == _selected_unit.pos:
+						_selected_unit.has_acted = true
+						_go(S.idle)
+					elif mouse_tile_pos in _attack_tiles and battle_manager.GRID.has_unit(mouse_tile_pos):
+						var unit = battle_manager.GRID.get_unit(mouse_tile_pos)
+						if unit._player_id != _selected_unit._player_id:
+							battle_manager.attack(_selected_unit.pos, mouse_tile_pos)
+							_selected_unit.has_acted = true
+							_go(S.idle)
+				
 				if _is(S.moving_unit):
 					if mouse_tile_pos == _selected_unit.pos:
 						_go(S.selecting_target)
 					elif mouse_tile_pos in _move_tiles:
-						_move_unit(mouse_tile_pos)
+						battle_manager.move_unit(_selected_unit.pos, mouse_tile_pos)
 						_go(S.selecting_target)
 					else:
 						_go(S.idle)
@@ -49,22 +78,17 @@ func _unhandled_input(event):
 					if is_mouse_on_map:
 						if battle_manager.GRID.has_unit(mouse_tile_pos):
 							var unit = battle_manager.GRID.get_unit(mouse_tile_pos)
-							if !unit.has_acted:
+							if !unit.has_acted and unit._player_id == battle_manager._player_on_turn._player_id:
 								_selected_unit = unit
 								_go(S.moving_unit)
 			
 			else:
 				if _is(S.card_selected):
 					if is_mouse_on_map and !battle_manager.GRID.is_ocupied(mouse_tile_pos):
-						_play_card(mouse_tile_pos)
+						battle_manager.play_card(_selected_card, mouse_tile_pos)
 						_go(S.idle)
 					_go(S.idle)
 
-func _play_card(mouse_tile_pos):
-	battle_manager.play_card(_selected_card, mouse_tile_pos)
-
-func _move_unit(to: Vector2):
-	battle_manager.move_unit(_selected_unit.pos, to)
 
 func set_is_mouse_on_map(value):
 	is_mouse_on_map = value
@@ -135,8 +159,8 @@ func _is(state) -> bool:
 func _connect_signals() -> void:
 	battle_manager._player_1.connect("card_drawn", self, "_on_card_drawn")
 	battle_manager._player_2.connect("card_drawn", self, "_on_card_drawn")
-	battle_manager._player_1.connect("card_discarded", self, "_on_card_discarded")
-	battle_manager._player_2.connect("card_discarded", self, "_on_card_discarded")
+	battle_manager._player_1.connect("card_used", self, "_on_card_used")
+	battle_manager._player_2.connect("card_used", self, "_on_card_used")
 	battle_manager._player_1.connect("health_changed", self, "_on_health_changed")
 	battle_manager._player_2.connect("health_changed", self, "_on_health_changed")
 	battle_manager._player_1.connect("gold_changed", self, "_on_gold_changed")
@@ -147,11 +171,13 @@ func _connect_signals() -> void:
 		card.connect("card_clicked", self, "_on_card_clicked")
 	battle_manager.connect("unit_added", board, "_on_unit_added")
 	battle_manager.connect("unit_moved", board, "_on_unit_moved")
+	battle_manager.connect("unit_died", board, "_on_unit_died")
+	battle_manager.connect("unit_has_acted", board, "_on_unit_has_acted")
 
 func _on_card_drawn(card) -> void:
 	hand.add_card(card)
 
-func _on_card_discarded(card) -> void:
+func _on_card_used(card) -> void:
 	hand.remove_card(card)
 
 func _on_health_changed(value) -> void:
@@ -162,19 +188,8 @@ func _on_gold_changed(value) -> void:
 
 func _on_EndTurn_pressed():
 	battle_manager.change_turn()
+	_go(S.idle)
 	$Turn.text = str(battle_manager._player_on_turn)
-
-func _on_Deck_pressed():
-	if battle_manager.player_on_turn == 1:
-		print(battle_manager._player_1._deck)
-	if battle_manager.player_on_turn == 2:
-		print(battle_manager._player_2._deck)
-
-func _on_Discard_pressed():
-	if battle_manager.player_on_turn == 1:
-		print(battle_manager._player_1._discard_deck)
-	if battle_manager.player_on_turn == 2:
-		print(battle_manager._player_2._discard_deck)
 
 func _on_card_entered(card):
 	if _is(S.idle):

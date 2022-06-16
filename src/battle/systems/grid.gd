@@ -39,7 +39,7 @@ func remove_unit(pos: Vector2) -> void:
 	assert(is_in_grid(pos), "%s is not part of the grid" %pos)
 	assert(has_unit(pos), "%s doesnt have a unit" %pos)
 	grid[_str(pos)].unit = null
-	grid[_str(pos)].walkable = true 
+	grid[_str(pos)].ocupied = false
 
 func get_unit(pos: Vector2) -> Unit:
 	assert(is_in_grid(pos), "%s is not part of the grid" %pos)

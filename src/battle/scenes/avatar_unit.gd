@@ -2,10 +2,15 @@ extends Node2D
 
 
 var has_acted setget set_has_acted
+var player_id
 var info
 
 func _ready():
-	pass
+	if player_id == 1:
+		$ColorRect.modulate = Color(0.2, 0.2, 0.8)
+	if player_id == 2:
+		$ColorRect.modulate = Color(0.8, 0.2, 0.2)
+
 
 func update_texture(texture: Texture):
 	var reference_frames: SpriteFrames = $AnimatedSprite.frames
@@ -29,6 +34,8 @@ func update_texture(texture: Texture):
 func set_has_acted(value):
 	has_acted = value
 	if has_acted:
+		print("has_acted")
 		modulate = Color(0.5, 0.5, 0.5)
 	if !has_acted:
+		print("has_not_acted")
 		modulate = Color(1, 1, 1)

@@ -2,10 +2,15 @@ extends Node
 class_name Unit
 
 
-var health: int
-var pos : Vector2
-var has_acted : bool
+signal died(unit)
+signal has_acted(has, unit)
 
+var health: int setget set_health
+var pos : Vector2
+var has_acted : bool setget set_has_acted
+var card_reference_name
+
+var _card_info
 var _player_id = null
 var _name: String
 var _is_archer : bool
@@ -24,6 +29,7 @@ func _init(card_info, initial_pos, player_id):
 	if card_info[0] != "unit":
 		print("card info type is not unit")
 		return 
+	_card_info = card_info
 	_name = card_info[1]
 	_cost = card_info[2]
 	_max_health = card_info[3]
@@ -47,7 +53,17 @@ func receive_attack(attacking_unit) -> void:
 	if (damage - _defence) <= 0:
 		health -= 1
 	else:
-		health -= (damage - _defence)
+		self.health -= (damage - _defence)
 
+func set_health(value):
+	health = value
+	health = clamp(health, 0, _max_health)
+	if health == 0:
+		print("oi")
+		emit_signal("died", self)
 
+func set_has_acted(value):
+	has_acted = value
+	emit_signal("has_acted", value, self)
+	
 
