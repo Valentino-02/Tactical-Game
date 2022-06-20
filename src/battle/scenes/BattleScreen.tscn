@@ -182,10 +182,10 @@ position = Vector2( -304, 376 )
 script = ExtResource( 9 )
 
 [node name="Display" type="Control" parent="."]
-margin_left = -313.0
-margin_top = 1.0
-margin_right = -38.0
-margin_bottom = 308.0
+margin_left = -338.0
+margin_top = 15.0
+margin_right = -63.0
+margin_bottom = 322.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -204,9 +204,9 @@ __meta__ = {
 
 [node name="Health" type="Label" parent="Display"]
 modulate = Color( 0.0862745, 0.0705882, 0.0823529, 1 )
-margin_left = 6.0
+margin_left = 7.0
 margin_top = 41.0
-margin_right = 286.0
+margin_right = 287.0
 margin_bottom = 72.0
 custom_fonts/font = ExtResource( 8 )
 text = "Hello"
@@ -228,9 +228,9 @@ __meta__ = {
 
 [node name="Defence" type="Label" parent="Display"]
 modulate = Color( 0.0862745, 0.0705882, 0.0823529, 1 )
-margin_left = 5.0
+margin_left = 6.0
 margin_top = 113.0
-margin_right = 285.0
+margin_right = 286.0
 margin_bottom = 144.0
 custom_fonts/font = ExtResource( 8 )
 text = "Hello"
@@ -240,9 +240,9 @@ __meta__ = {
 
 [node name="Range" type="Label" parent="Display"]
 modulate = Color( 0.0862745, 0.0705882, 0.0823529, 1 )
-margin_left = 4.0
+margin_left = 6.0
 margin_top = 147.0
-margin_right = 284.0
+margin_right = 286.0
 margin_bottom = 178.0
 custom_fonts/font = ExtResource( 8 )
 text = "Hello"
@@ -252,10 +252,34 @@ __meta__ = {
 
 [node name="Movement" type="Label" parent="Display"]
 modulate = Color( 0.0862745, 0.0705882, 0.0823529, 1 )
-margin_left = 4.0
+margin_left = 6.0
 margin_top = 184.0
-margin_right = 284.0
+margin_right = 286.0
 margin_bottom = 215.0
+custom_fonts/font = ExtResource( 8 )
+text = "Hello"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="IsArcher" type="Label" parent="Display"]
+modulate = Color( 0.0862745, 0.0705882, 0.0823529, 1 )
+margin_left = 6.0
+margin_top = 218.0
+margin_right = 286.0
+margin_bottom = 249.0
+custom_fonts/font = ExtResource( 8 )
+text = "Hello"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="IsCavalry" type="Label" parent="Display"]
+modulate = Color( 0.0862745, 0.0705882, 0.0823529, 1 )
+margin_left = 5.0
+margin_top = 253.0
+margin_right = 285.0
+margin_bottom = 284.0
 custom_fonts/font = ExtResource( 8 )
 text = "Hello"
 __meta__ = {

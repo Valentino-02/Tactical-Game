@@ -29,6 +29,23 @@ func has_unit(pos: Vector2) -> bool:
 	assert(is_in_grid(pos), "%s is not part of the grid" %pos)
 	return true if grid[_str(pos)].unit else false
 
+func has_enemy(pos: Vector2, player_id) -> bool:
+	assert(is_in_grid(pos), "%s is not part of the grid" %pos)
+	if grid[_str(pos)].unit:
+		if get_unit(pos)._player_id != player_id:
+			return true
+		else: return false
+	else: return false
+
+func has_ally(pos: Vector2, player_id) -> bool:
+	assert(is_in_grid(pos), "%s is not part of the grid" %pos)
+	if grid[_str(pos)].unit:
+		if get_unit(pos)._player_id == player_id:
+			return true
+		else: return false
+	else: return false
+
+
 func add_unit(unit, pos: Vector2) -> void:
 	assert(is_in_grid(pos), "%s is not part of the grid" %pos)
 	assert(!is_ocupied(pos), "%s is ocupied" %pos)
@@ -55,6 +72,11 @@ func move_unit(from: Vector2, to: Vector2) -> void:
 	grid[_str(from)].ocupied = false
 	grid[_str(to)].unit = unit
 	grid[_str(to)].ocupied = true
+
+func get_distance(pos1: Vector2, pos2: Vector2) -> int:
+	var x = abs(pos1.x - pos2.x)
+	var y = abs(pos1.y - pos2.y)
+	return x + y
 
 func is_zone_control(pos: Vector2, player_id) -> bool:
 	var is_zone = false
@@ -121,7 +143,7 @@ func get_walkable_tiles(start_pos: Vector2, max_steps: int) -> Array:
 					var unit = get_unit(next_tile)
 					if unit._player_id != owner_id: continue
 				checked.append(next_tile)
-				if !is_zone_control(next_tile, owner_id): next_queue.append(next_tile)
+				if !is_zone_control(next_tile, owner_id) or get_unit(start_pos).atributes.is_swift: next_queue.append(next_tile)
 				if !is_ocupied(next_tile): out.append(next_tile)
 		steps += 1
 		queue = next_queue.duplicate()

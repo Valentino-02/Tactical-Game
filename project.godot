@@ -29,7 +29,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://src/battle/systems/player.gd"
 }, {
-"base": "Node",
+"base": "Resource",
 "class": "Unit",
 "language": "GDScript",
 "path": "res://src/battle/systems/unit.gd"

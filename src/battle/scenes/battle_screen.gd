@@ -28,27 +28,9 @@ func _unhandled_input(event):
 	var mouse_pos = get_global_mouse_position()
 	var mouse_tile_pos = board.map.world_to_map(mouse_pos) 
 	board.tile_hovered = mouse_tile_pos
-	
 	if _is(S.card_selected):
 		_selected_card.global_position = mouse_pos + _selected_card_offset
-	
-	if is_mouse_on_map and battle_manager.GRID.has_unit(mouse_tile_pos):
-		var unit
-		if unit != battle_manager.GRID.get_unit(mouse_tile_pos):
-			unit = battle_manager.GRID.get_unit(mouse_tile_pos)
-			$Display/Damage.text = str("Damage: ",unit._damage)
-			$Display/Defence.text = str("Defence: ",unit._defence)
-			$Display/Health.text = str("Health: ",unit.health)
-			$Display/Movement.text = str("Movement: ",unit._movement)
-			$Display/Range.text = str("Range: ",unit._min_range,"/",unit._max_range)
-			$Display/UnitName.text = str("Name: ",unit._name)
-	if is_mouse_on_map and !battle_manager.GRID.has_unit(mouse_tile_pos):
-			$Display/Damage.text = str("Damage: ")
-			$Display/Defence.text = str("Defence: ")
-			$Display/Health.text = str("Helath: ")
-			$Display/Movement.text = str("Movement: ")
-			$Display/Range.text = str("Range: ")
-			$Display/UnitName.text = str("Name: ")
+	_display_unit_info(mouse_tile_pos)
 	
 	if event is InputEventMouseButton:
 		if event.button_index == BUTTON_LEFT:
@@ -56,13 +38,12 @@ func _unhandled_input(event):
 			if event.pressed:
 				if _is(S.selecting_target):
 					if mouse_tile_pos == _selected_unit.pos:
-						_selected_unit.has_acted = true
+						battle_manager.unit_end_turn(_selected_unit)
 						_go(S.idle)
 					elif mouse_tile_pos in _attack_tiles and battle_manager.GRID.has_unit(mouse_tile_pos):
 						var unit = battle_manager.GRID.get_unit(mouse_tile_pos)
 						if unit._player_id != _selected_unit._player_id:
 							battle_manager.attack(_selected_unit.pos, mouse_tile_pos)
-							_selected_unit.has_acted = true
 							_go(S.idle)
 				
 				if _is(S.moving_unit):
@@ -70,7 +51,10 @@ func _unhandled_input(event):
 						_go(S.selecting_target)
 					elif mouse_tile_pos in _move_tiles:
 						battle_manager.move_unit(_selected_unit.pos, mouse_tile_pos)
-						_go(S.selecting_target)
+						if _selected_unit.has_acted:
+							_go(S.idle)
+						elif !_selected_unit.has_acted:
+							_go(S.selecting_target)
 					else:
 						_go(S.idle)
 				
@@ -89,6 +73,28 @@ func _unhandled_input(event):
 						_go(S.idle)
 					_go(S.idle)
 
+func _display_unit_info(mouse_tile_pos):
+	if is_mouse_on_map and battle_manager.GRID.has_unit(mouse_tile_pos):
+		var unit
+		if unit != battle_manager.GRID.get_unit(mouse_tile_pos):
+			unit = battle_manager.GRID.get_unit(mouse_tile_pos)
+			$Display/Damage.text = str("Damage: ",unit.damage)
+			$Display/Defence.text = str("Defence: ",unit.defence)
+			$Display/Health.text = str("Health: ",unit.health)
+			$Display/Movement.text = str("Movement: ",unit.movement)
+			$Display/Range.text = str("Range: ",unit.min_range,"/",unit.max_range)
+			$Display/UnitName.text = str("Name: ",unit._name)
+			$Display/IsArcher.text = str("Is Archer: ",unit.is_archer)
+			$Display/IsCavalry.text = str("Is Cavalry: ",unit.is_cavalry)
+	if is_mouse_on_map and !battle_manager.GRID.has_unit(mouse_tile_pos):
+		$Display/Damage.text = str("Damage: ")
+		$Display/Defence.text = str("Defence: ")
+		$Display/Health.text = str("Health: ")
+		$Display/Movement.text = str("Movement: ")
+		$Display/Range.text = str("Range: ")
+		$Display/UnitName.text = str("Name: ")
+		$Display/IsArcher.text = str("Is Archer: ")
+		$Display/IsCavalry.text = str("Is Cavalry: ")
 
 func set_is_mouse_on_map(value):
 	is_mouse_on_map = value
@@ -123,11 +129,10 @@ func set_state(value):
 		_selected_card.modulate = Color(1, 1, 1, 0.5)
 	if _state == S.moving_unit:
 		print("state = moving_unit")
-		self._move_tiles = battle_manager.GRID.get_walkable_tiles(_selected_unit.pos, _selected_unit._movement)
+		self._move_tiles = battle_manager.GRID.get_walkable_tiles(_selected_unit.pos, _selected_unit.movement)
 	if _state == S.selecting_target:
 		print("state = selecting_target")
-		self._attack_tiles = battle_manager.GRID.get_attackable_tiles(_selected_unit.pos, _selected_unit._min_range, _selected_unit._max_range)
-
+		self._attack_tiles = battle_manager.GRID.get_attackable_tiles(_selected_unit.pos, _selected_unit.min_range, _selected_unit.max_range)
 
 func set_prev_state(value):
 	_prev_state = value
@@ -138,7 +143,6 @@ func set_prev_state(value):
 		self._move_tiles = []
 	if _prev_state == S.selecting_target:
 		self._attack_tiles = []
-
 
 func _go(state):
 	self._prev_state = _state

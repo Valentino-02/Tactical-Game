@@ -62,6 +62,5 @@ func _on_unit_died(unit):
 	dead_avatar.queue_free()
 
 func _on_unit_has_acted(has, unit):
-	print("oi")
 	var avatar = avatar_holder.get_node(str(unit.pos))
 	avatar.has_acted = has
