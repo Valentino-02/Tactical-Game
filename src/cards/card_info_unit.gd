@@ -1,7 +1,6 @@
 extends Resource
 class_name CardInfoUnit
 
-
 var _info_array: Array
 var _type: String
 var _name: String 
@@ -16,7 +15,6 @@ var _max_range: int
 var _move: int
 var _ability = null
 var _img_path : String
-
 
 func _init(info_array):
 	assert(info_array[0] == "unit", "card info type is not unit")

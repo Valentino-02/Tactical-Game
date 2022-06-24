@@ -1,0 +1,156 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://assets/fonts/manaspc.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://assets/fonts/8bitlim.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://assets/fonts/PixelFont.tres" type="DynamicFont" id=3]
+[ext_resource path="res://src/cards/card_structure.gd" type="Script" id=4]
+[ext_resource path="res://assets/images/cards/units/unit_card_background.png" type="Texture" id=5]
+
+[sub_resource type="DynamicFont" id=1]
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=2]
+font_data = ExtResource( 2 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 99, 140.5 )
+
+[node name="CardUnit" type="Node2D"]
+script = ExtResource( 4 )
+
+[node name="Background" type="Sprite" parent="."]
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 5 )
+centered = false
+
+[node name="ArtContainer" type="Control" parent="."]
+margin_left = 54.0
+margin_top = 51.0
+margin_right = 192.0
+margin_bottom = 175.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Art" type="Sprite" parent="ArtContainer"]
+centered = false
+
+[node name="Damage" type="Label" parent="."]
+modulate = Color( 0, 0, 0, 1 )
+margin_left = 9.0
+margin_top = 29.0
+margin_right = 39.0
+margin_bottom = 60.0
+custom_fonts/font = ExtResource( 3 )
+text = "1"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Defence" type="Label" parent="."]
+modulate = Color( 0, 0, 0, 1 )
+margin_left = 9.0
+margin_top = 80.0
+margin_right = 39.0
+margin_bottom = 111.0
+rect_pivot_offset = Vector2( -66, 0 )
+custom_fonts/font = ExtResource( 3 )
+text = "1"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Range" type="Label" parent="."]
+modulate = Color( 0, 0, 0, 1 )
+margin_left = 8.0
+margin_top = 137.0
+margin_right = 41.0
+margin_bottom = 168.0
+rect_pivot_offset = Vector2( -66, 0 )
+custom_fonts/font = SubResource( 1 )
+text = "2/3"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Move" type="Label" parent="."]
+modulate = Color( 0, 0, 0, 1 )
+margin_left = 9.0
+margin_top = 190.0
+margin_right = 39.0
+margin_bottom = 221.0
+rect_pivot_offset = Vector2( -66, 0 )
+custom_fonts/font = ExtResource( 3 )
+text = "1"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Health" type="Label" parent="."]
+modulate = Color( 0, 0, 0, 1 )
+margin_left = 3.0
+margin_top = 244.0
+margin_right = 43.0
+margin_bottom = 275.0
+rect_pivot_offset = Vector2( -66, 0 )
+custom_fonts/font = ExtResource( 3 )
+text = "12"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Name" type="Label" parent="."]
+modulate = Color( 0, 0, 0, 1 )
+margin_left = 97.0
+margin_top = 16.0
+margin_right = 193.0
+margin_bottom = 34.0
+custom_fonts/font = SubResource( 2 )
+text = "Archer"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Cost" type="Label" parent="."]
+modulate = Color( 0, 0, 0, 1 )
+margin_left = 55.0
+margin_top = 11.0
+margin_right = 85.0
+margin_bottom = 42.0
+custom_fonts/font = ExtResource( 3 )
+text = "1"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Ability" type="Label" parent="."]
+modulate = Color( 0, 0, 0, 1 )
+margin_left = 54.0
+margin_top = 192.0
+margin_right = 186.0
+margin_bottom = 227.0
+rect_pivot_offset = Vector2( -66, 0 )
+custom_fonts/font = SubResource( 1 )
+text = "This is the 
+aaa"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2( 100, 140.5 )
+shape = SubResource( 3 )
+
+[connection signal="input_event" from="Area2D" to="." method="_on_Area2D_input_event"]
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_Area2D_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_Area2D_mouse_exited"]

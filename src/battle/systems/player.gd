@@ -8,16 +8,17 @@ signal health_changed(value)
 signal gold_changed(value)
 
 var health : int setget set_health
-var gold: int setget set_gold
+var gold : int setget set_gold
+var mines := []
 
 var _is_turn := false
 var _max_health := 10
-var _max_hand_size := 3
+var _max_hand_size := 5
 var _deck := []
 var _discard_deck := []
 var _hand := []
 var _void_deck := []
-var _player_id 
+var _player_id
 
 
 func _init(deck, player_id):
@@ -28,6 +29,7 @@ func _init(deck, player_id):
 		card.player_id = player_id
 	_deck.shuffle()
 	health = _max_health
+	if _player_id == 2: gold = 2
 
 func start_turn() -> void:
 	assert(!_is_turn, "it is already %s turn" % self)
@@ -82,7 +84,10 @@ func can_play(card) -> bool:
 	return card.info._cost <= gold
 
 func gain_gold() -> void:
-	self.gold += 5
+	var extra = 0
+	for mine in mines:
+		extra += 2
+	self.gold += 2 + extra
 
 func set_health(value) -> void:
 	health = value

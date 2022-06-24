@@ -5,6 +5,8 @@ signal died(unit)
 signal has_acted(has, unit)
 
 var card_reference_name : String # to return the corresponding card to hand when unit dies
+var weapons : Array 
+var weapon_count := 0 setget set_weapons
 var pos : Vector2
 var has_acted := false setget set_has_acted
 var is_engaged := false
@@ -18,6 +20,7 @@ var min_range : int
 var max_range : int
 var movement : int
 
+var _type
 var _player_id = null
 var _name: String
 var _max_health: int
@@ -28,9 +31,9 @@ var _defence: int
 var _min_range: int
 var _max_range: int
 var _movement: int
-var _atributes_to_add
+var _abilities_to_add
 
-var atributes := {
+var abilities := {
 	"is_quick_shoting": false, # resets to false at end of turn. lets archers to attack after moving
 	"quick_shot_trigger": 0, # if moved tiles is higher or equal than this, sets quick_shoting to true
 	
@@ -61,7 +64,8 @@ func _init(card_info, initial_pos, player_id):
 	if card_info[0] != "unit":
 		print("card info type is not unit")
 		return 
-	_player_id = player_id
+	_player_id = player_id 
+	_type = card_info[0]
 	_name = card_info[1]
 	_max_health = card_info[3]
 	_is_archer = true if (card_info[4] == 1) else false
@@ -71,7 +75,7 @@ func _init(card_info, initial_pos, player_id):
 	_min_range = card_info[8]
 	_max_range = card_info[9]
 	_movement = card_info[10]
-	_atributes_to_add = card_info[11]
+	_abilities_to_add = card_info[11]
 	
 	pos = initial_pos
 	max_health = _max_health
@@ -84,8 +88,8 @@ func _init(card_info, initial_pos, player_id):
 	max_range = _max_range
 	movement = _movement
 	
-	for key in _atributes_to_add:
-		atributes[key] = _atributes_to_add[key]
+	for key in _abilities_to_add:
+		abilities[key] = _abilities_to_add[key]
 
 
 func set_health(value):
@@ -97,3 +101,20 @@ func set_health(value):
 func set_has_acted(value):
 	has_acted = value
 	emit_signal("has_acted", value, self)
+
+func set_weapons(value):
+	weapon_count = value
+	var weapon = weapons.back()
+	for key in weapon._abilities_to_add:
+		if typeof(weapon._abilities_to_add[key]) == 2:
+			abilities[key] += weapon._abilities_to_add[key]
+		elif typeof(weapon._abilities_to_add[key]) == 1:
+			abilities[key] = weapon._abilities_to_add[key]
+	
+	health += weapon._atributes_to_add[0]
+	is_archer = true if weapon._atributes_to_add[1] == 1 else false
+	is_cavalry = true if weapon._atributes_to_add[2] == 1 else false
+	damage += weapon._atributes_to_add[3]
+	defence += weapon._atributes_to_add[4]
+	max_range += weapon._atributes_to_add[5]
+	movement += weapon._atributes_to_add[6]

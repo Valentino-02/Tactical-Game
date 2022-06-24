@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/selected_tile.png-d8a881b40255a83d52b587e3867934be.stex"
+path="res://.import/horse.png-e98fa3ca2b03a8cc58908de6576bceb4.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/tiles/selected_tile.png"
-dest_files=[ "res://.import/selected_tile.png-d8a881b40255a83d52b587e3867934be.stex" ]
+source_file="res://assets/images/cards/weapons/horse.png"
+dest_files=[ "res://.import/horse.png-e98fa3ca2b03a8cc58908de6576bceb4.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=false
+flags/filter=true
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2
