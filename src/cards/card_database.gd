@@ -14,7 +14,7 @@ const UNITS := {
 	"horseman": 
 		["unit", "horseman", 2, 10, 0, 1, 3, 0, 1, 1, 4, {}],
 	"hoplite": 
-		["unit", "hoplite", 2, 10, 0, 0, 3, 1, 1, 1, 2, {"has_polearm":true}],
+		["unit", "hoplite", 2, 10, 0, 0, 3, 1, 1, 1, 2, {"polearm":1}],
 	"camel_rider": 
 		["unit", "camel_rider", 2, 10, 0, 1, 4, 0, 1, 1, 3, {}],
 	"slinger": 
@@ -32,7 +32,7 @@ const UNITS := {
 	"cataphract": 
 		["unit", "cataphract", 4, 10, 0, 1, 4, 2, 1, 1, 3, {}],
 	"legionary": 
-		["unit", "legionary", 4, 12, 0, 0, 4, 2, 1, 1, 2, {"has_polearm":true}],
+		["unit", "legionary", 4, 12, 0, 0, 4, 2, 1, 1, 2, {"polearm":1}],
 	
 	"longbowman": 
 		["unit", "longbowman", 5, 8, 1, 0, 5, 0, 3, 5, 2, {}],

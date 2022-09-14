@@ -29,7 +29,7 @@ func _init(deck, player_id):
 		card.player_id = player_id
 	_deck.shuffle()
 	health = _max_health
-	if _player_id == 2: gold = 2
+	if _player_id == 2: gold += 1
 
 func start_turn() -> void:
 	assert(!_is_turn, "it is already %s turn" % self)
@@ -86,7 +86,7 @@ func can_play(card) -> bool:
 func gain_gold() -> void:
 	var extra = 0
 	for mine in mines:
-		extra += 2
+		extra += 1
 	self.gold += 2 + extra
 
 func set_health(value) -> void:

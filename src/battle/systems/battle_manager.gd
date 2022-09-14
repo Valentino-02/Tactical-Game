@@ -19,6 +19,10 @@ var _player_1_structures : Array
 var _player_2_structures : Array
 var _gold_mine_1_positions := [Vector2(0,4), Vector2(0,5), Vector2(1,4), Vector2(1,5)]
 var _gold_mine_2_positions := [Vector2(8,4), Vector2(8,5), Vector2(9,4), Vector2(9,5)]
+#var _gold_mine_3_positions := [
+#	Vector2(4,4), Vector2(4,5), Vector2(5,4), Vector2(5,5), 
+#	Vector2(4,3), Vector2(5,3), Vector2(4,6), Vector2(5,6)
+#]
 var _gold_mines := []
 var _player_1_castle_positions := [Vector2(4,9), Vector2(5,9)]
 var _player_2_castle_positions := [Vector2(4,0), Vector2(5,0)]
@@ -28,6 +32,7 @@ func _init(deck_1, deck_2):
 	GRID.create_empty_grid(MAP_SIZE.x, MAP_SIZE.y)
 	_gold_mines.append(GoldMine.new(_gold_mine_1_positions))
 	_gold_mines.append(GoldMine.new(_gold_mine_2_positions))
+#	_gold_mines.append(GoldMine.new(_gold_mine_3_positions))
 	for mine in _gold_mines:
 		GRID.add_gold_mine(mine)
 	_player_1 = Player.new(deck_1, 1)
@@ -102,6 +107,7 @@ func play_card(card, pos: Vector2)-> void:
 		unit.connect("died", self, "_on_entity_died")
 		unit.connect("has_acted", self, "_on_unit_has_acted")
 		emit_signal("entity_added", unit)
+		unit_end_turn(unit)
 	
 	if card.info._type == "structure":
 		var structure = Structure.new(card.info._info_array, pos, player_id)
@@ -284,6 +290,7 @@ func _on_entity_died(entity) -> void:
 
 func _entity_died_cleanup(entity, player, player_units, player_structures) -> void:
 	GRID.remove_entity(entity.pos)
+	_check_for_engaged()
 	player.return_card(entity.card_reference_name)
 	if entity._type == "unit":
 		player_units.erase(entity)

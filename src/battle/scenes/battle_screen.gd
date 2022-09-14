@@ -13,6 +13,7 @@ var _prev_state setget set_prev_state
 var _selected_card
 var _selected_card_offset
 var _selected_unit
+var _selected_unit_prev_pos
 var _move_tiles setget set_move_tiles
 var _attack_tiles setget set_attack_tiles
 var _deploy_tiles setget set_deploy_tiles
@@ -60,11 +61,17 @@ func _unhandled_input(event):
 						_go(S.idle)
 				
 				if _is(S.idle):
-					if is_mouse_on_map and battle_manager.GRID.has_unit(mouse_tile_pos):
+					self._move_tiles = []
+					if is_mouse_on_map and battle_manager.GRID.has_ally_unit(mouse_tile_pos, battle_manager._player_on_turn._player_id):
 						var unit = battle_manager.GRID.get_unit(mouse_tile_pos)
-						if !unit.has_acted and unit._player_id == battle_manager._player_on_turn._player_id:
+						if !unit.has_acted:
 							_selected_unit = unit
+							_selected_unit_prev_pos = _selected_unit.pos
 							_go(S.moving_unit)
+					if is_mouse_on_map and battle_manager.GRID.has_enemy_unit(mouse_tile_pos, battle_manager._player_on_turn._player_id):
+						var unit = battle_manager.GRID.get_unit(mouse_tile_pos)
+						self._move_tiles = battle_manager.GRID.get_walkable_tiles(unit.pos, unit._movement)
+			
 			
 			else:
 				if _is(S.card_selected):
@@ -78,6 +85,13 @@ func _unhandled_input(event):
 				
 				if _is(S.moving_unit):
 					_go(S.idle)
+				
+				if _is(S.selecting_target):
+					if _selected_unit_prev_pos == _selected_unit.pos:
+						_go(S.idle)
+					else:
+						battle_manager.move_unit(_selected_unit.pos, _selected_unit_prev_pos)
+						_go(S.idle)
 
 func _display_unit_info(mouse_tile_pos):
 	if is_mouse_on_map and battle_manager.GRID.has_unit(mouse_tile_pos):

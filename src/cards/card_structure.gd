@@ -9,8 +9,12 @@ var id
 var player_id
 
 func _ready():
-	$ArtContainer/Art.texture = load(info._img_path)
+	if Directory.new().file_exists(info._img_path):
+		$ArtContainer/Art.texture = load(info._img_path)
+	else:
+		$ArtContainer/Art.texture = load("res://assets/images/cards/structures/first_aid_tent.png")
 	$ArtContainer/Art.scale *= $ArtContainer.rect_size/$ArtContainer/Art.texture.get_size()
+	
 	$Health.text = str(info._health)
 	$Cost.text = str(info._cost)
 	$Name.text = str(info._name)
